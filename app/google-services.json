@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "608617228445",
+    "project_id": "qrunch-470308",
+    "storage_bucket": "qrunch-470308.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608617228445:android:211ef370d3c241a6f94c74",
+        "android_client_info": {
+          "package_name": "com.example.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "608617228445-argcilphfqru1dqgrji2oeu6h0b7d7rn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.test",
+            "certificate_hash": "db9a8053108e68bf19c4533df290f148c9074540"
+          }
+        },
+        {
+          "client_id": "608617228445-t5h1ov7ickpmf1it3270jb89kahqmcbp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDP5tCXAu9ZdUSABvx9dkWLxPq-6Sr_SI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "608617228445-t5h1ov7ickpmf1it3270jb89kahqmcbp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
