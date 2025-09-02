@@ -1,7 +1,8 @@
-package com.example.test;
+package com.example.test.screen;
 
 import static com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.util.Log;
@@ -25,13 +26,15 @@ import androidx.credentials.GetCredentialResponse;
 import androidx.credentials.exceptions.ClearCredentialException;
 import androidx.credentials.exceptions.GetCredentialException;
 
+import com.example.test.R;
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
-import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -50,6 +53,10 @@ public class LoginActivity extends AppCompatActivity {
     // [START declare_credential_manager]
     private CredentialManager credentialManager;
     // [END declare_credential_manager]
+
+    // [START declare_Firestore]
+    private FirebaseFirestore db;
+    // [END declare_Firestore]
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +80,11 @@ public class LoginActivity extends AppCompatActivity {
         credentialManager = CredentialManager.create(getBaseContext());
         // [END initialize_credential_manager]
 
+        // [START initialize_Firestore]
+        // Initialize Firestor DB
+        db = FirebaseFirestore.getInstance();
+        // [END initialize_Firestore]
+
         Button loginButton = findViewById(R.id.buttonLoginGoogle);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +100,6 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-        signOut();
     }
 
     private void launchCredentialManager() {
@@ -111,28 +122,28 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Instantiate a Google sign-in request
-//        // For the bottom sheet UI:
-//        GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
-//                .setFilterByAuthorizedAccounts(false) // true allows only users who are already authorized on this device, false allows u to add an account
-//                .setNonce(hashedNonce) // protects from replay attacks
-//                .setServerClientId("608617228445-ipki25pjggso3iidd1407g034g18g62s.apps.googleusercontent.com")
-//                .build();
-//
-//        // Create the Credential Manager request
-//        GetCredentialRequest request = new GetCredentialRequest.Builder()
-//                .addCredentialOption(googleIdOption)
-//                .build();
-
-        GetSignInWithGoogleOption signInWithGoogleOption = new GetSignInWithGoogleOption
-                .Builder("608617228445-ipki25pjggso3iidd1407g034g18g62s.apps.googleusercontent.com")
+        // For the bottom sheet UI:
+        GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(false) // true allows only users who are already authorized on this device, false allows u to add an account
                 .setNonce(hashedNonce) // protects from replay attacks
+                .setServerClientId("608617228445-ipki25pjggso3iidd1407g034g18g62s.apps.googleusercontent.com")
                 .build();
 
         // Create the Credential Manager request
         GetCredentialRequest request = new GetCredentialRequest.Builder()
-                .addCredentialOption(signInWithGoogleOption)
+                .addCredentialOption(googleIdOption)
                 .build();
-        // [END create_credential_manager_request]
+
+//        GetSignInWithGoogleOption signInWithGoogleOption = new GetSignInWithGoogleOption
+//                .Builder("608617228445-ipki25pjggso3iidd1407g034g18g62s.apps.googleusercontent.com")
+//                .setNonce(hashedNonce) // protects from replay attacks
+//                .build();
+//
+//        // Create the Credential Manager request
+//        GetCredentialRequest request = new GetCredentialRequest.Builder()
+//                .addCredentialOption(signInWithGoogleOption)
+//                .build();
+//        // [END create_credential_manager_request]
 
         // Launch Credential Manager UI
         credentialManager.getCredentialAsync(
@@ -178,10 +189,8 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "Attempting to sign in with ID Token: " + idToken);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
-                    Toast.makeText(LoginActivity.this, "OMAGOO1", Toast.LENGTH_SHORT).show();
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
-                        Toast.makeText(LoginActivity.this, "OMAGOO", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser();
                         updateUI(user);
@@ -222,12 +231,32 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         Toast.makeText(LoginActivity.this, "ANISHA ISCH ALWAYS DUMB", Toast.LENGTH_SHORT).show();
 
-//        findViewById(R.id.buttonLoginGoogle).setVisibility(user == null ? View.VISIBLE : View.GONE);
         if (user != null) {
-            Toast.makeText(LoginActivity.this, "ANISHA ISCH DUMB", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+            String authUid = user.getUid();
+
+            CollectionReference usersRef = db.collection("users");
+            usersRef.whereEqualTo("linkedAuthUid", authUid)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            // Profile exists
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            // No profile found → new user, go to profile setup
+                            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Error getting user profile", e);
+                    });
         }
         else {
-            Toast.makeText(LoginActivity.this, "OH NOESSSS", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Login failed, please try again", Toast.LENGTH_SHORT).show();
         }
     }
 }

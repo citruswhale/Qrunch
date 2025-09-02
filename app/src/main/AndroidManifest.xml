@@ -14,13 +14,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TEsT">
         <activity
-            android:name=".MainActivity"
-            android:exported="true"/>
+            android:name=".screen.ProfileActivity"
+            android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".screen.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".screen.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

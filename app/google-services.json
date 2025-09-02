@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "608617228445",
+    "firebase_url": "https://qrunch-470308-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "qrunch-470308",
     "storage_bucket": "qrunch-470308.firebasestorage.app"
   },
@@ -22,7 +23,7 @@
           }
         },
         {
-          "client_id": "608617228445-t5h1ov7ickpmf1it3270jb89kahqmcbp.apps.googleusercontent.com",
+          "client_id": "608617228445-ipki25pjggso3iidd1407g034g18g62s.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -35,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "608617228445-t5h1ov7ickpmf1it3270jb89kahqmcbp.apps.googleusercontent.com",
+              "client_id": "608617228445-ipki25pjggso3iidd1407g034g18g62s.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
