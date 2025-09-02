@@ -42,9 +42,24 @@ public class ProfileActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profile);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        View mainView = findViewById(R.id.main);
+
+        // Store initial padding values
+        final int initialLeftPadding = mainView.getPaddingLeft();
+        final int initialTopPadding = mainView.getPaddingTop();
+        final int initialRightPadding = mainView.getPaddingRight();
+        final int initialBottomPadding = mainView.getPaddingBottom();
+
+        ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            // Apply initial padding plus system bar insets
+            v.setPadding(
+                    initialLeftPadding + systemBars.left,
+                    initialTopPadding + systemBars.top,
+                    initialRightPadding + systemBars.right,
+                    initialBottomPadding + systemBars.bottom
+            );
             return insets;
         });
 
