@@ -8,11 +8,27 @@
     android:background="#FFF5E7"
     tools:context=".screen.HomeActivity">
 
+    <ImageButton
+        android:id="@+id/buttonEditProfile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Edit Profile"
+        android:padding="2dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_account_square"
+        app:layout_constraintBottom_toBottomOf="@id/textViewQR"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textViewQR"
+        app:layout_constraintVertical_bias="0.437"
+        app:tint="#3e2700" />
+
     <TextView
         android:id="@+id/textViewQR"
         android:layout_width="149dp"
         android:layout_height="34dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/bionic_comic"
         android:text="My QR:"
         android:textColor="#3e2700"
@@ -35,10 +51,9 @@
         android:src="@drawable/app_logo"
         app:layout_constraintBottom_toTopOf="@id/textViewQR"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonViewMenu"
-        app:layout_constraintVertical_bias="0.532"
+        app:layout_constraintVertical_bias="0.535"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <com.google.android.material.button.MaterialButton
@@ -58,10 +73,9 @@
         app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewQR"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.62"
         app:strokeColor="#3e2700"
         app:strokeWidth="3dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

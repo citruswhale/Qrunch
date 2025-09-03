@@ -90,7 +90,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         String authUid  = user.getUid();
         String name = editTextName.getText().toString().trim();
-        String rollNo = editTextRollNo.getText().toString().trim();
+        String rollNo = editTextRollNo.getText().toString().toLowerCase().trim();
         CollectionReference usersRef = db.collection("users");
 
         if (name.isEmpty() || rollNo.isEmpty()) {

@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TEsT">
         <activity
+            android:name=".screen.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".screen.ProfileActivity"
             android:exported="false" />
         <activity

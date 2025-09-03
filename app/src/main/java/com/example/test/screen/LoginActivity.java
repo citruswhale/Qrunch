@@ -11,19 +11,16 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.credentials.ClearCredentialStateRequest;
 import androidx.credentials.Credential;
 import androidx.credentials.CredentialManager;
 import androidx.credentials.CredentialManagerCallback;
 import androidx.credentials.CustomCredential;
 import androidx.credentials.GetCredentialRequest;
 import androidx.credentials.GetCredentialResponse;
-import androidx.credentials.exceptions.ClearCredentialException;
 import androidx.credentials.exceptions.GetCredentialException;
 
 import com.example.test.R;
@@ -203,31 +200,6 @@ public class LoginActivity extends AppCompatActivity {
     }
     // [END auth_with_google]
 
-    // [START sign_out]
-    private void signOut() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // When a user signs out, clear the current user credential state from all credential providers.
-        ClearCredentialStateRequest clearRequest = new ClearCredentialStateRequest();
-        credentialManager.clearCredentialStateAsync(
-                clearRequest,
-                new CancellationSignal(),
-                Executors.newSingleThreadExecutor(),
-                new CredentialManagerCallback<>() {
-                    @Override
-                    public void onResult(@NonNull Void result) {
-                        updateUI(null);
-                    }
-
-                    @Override
-                    public void onError(@NonNull ClearCredentialException e) {
-                        Log.e(TAG, "Couldn't clear user credentials: " + e.getLocalizedMessage());
-                    }
-                });
-    }
-    // [END sign_out]
-
     private void updateUI(FirebaseUser user) {
         Toast.makeText(LoginActivity.this, "ANISHA ISCH ALWAYS DUMB", Toast.LENGTH_SHORT).show();
 
@@ -241,13 +213,11 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         if (!queryDocumentSnapshots.isEmpty()) {
                             // Profile exists
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            startActivity(intent);
+                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             finish();
                         } else {
                             // No profile found → new user, go to profile setup
-                            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                            startActivity(intent);
+                            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
                             finish();
                         }
                     })
