@@ -1,18 +1,16 @@
 package com.example.test.model;
 
-import java.util.UUID;
-
 public class User {
     private String linkedAuthUid;
     private String rollNo;
     private String name;
-    private UUID vendorId;
+    private Long vendorId;
 
     public User() {
         vendorId = null;
     }
 
-    public User(String linkedAuthUid, String rollNo, String name, UUID vendorId) {
+    public User(String linkedAuthUid, String rollNo, String name, Long vendorId) {
         this.linkedAuthUid = linkedAuthUid;
         this.rollNo = rollNo;
         this.name = name;
@@ -43,11 +41,11 @@ public class User {
         this.name = name;
     }
 
-    public UUID getVendorId() {
+    public Long getVendorId() {
         return vendorId;
     }
 
-    public void setVendorId(UUID vendorId) {
+    public void setVendorId(Long vendorId) {
         this.vendorId = vendorId;
     }
 }

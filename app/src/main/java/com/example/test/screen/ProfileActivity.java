@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.test.R;
+import com.example.test.helper.PrefsHelper;
 import com.example.test.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -101,6 +102,9 @@ public class ProfileActivity extends AppCompatActivity {
             if (rollNo.isEmpty()) editTextRollNo.setError("Roll No required");
             return;
         }
+
+        PrefsHelper.saveRollNo(this, rollNo);
+        PrefsHelper.saveName(this, name);
 
         usersRef.document(rollNo)
                 .get()

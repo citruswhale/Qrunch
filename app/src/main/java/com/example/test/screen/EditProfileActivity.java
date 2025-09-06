@@ -20,6 +20,7 @@ import androidx.credentials.CredentialManagerCallback;
 import androidx.credentials.exceptions.ClearCredentialException;
 
 import com.example.test.R;
+import com.example.test.helper.ReauthenticateUserForSensitiveOpsHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,8 +36,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser user;
-    private CredentialManager credentialManager;
     private CollectionReference usersRef;
+    private CredentialManager credentialManager;
 
     private TextInputEditText editTextName;
     private TextInputEditText editTextStaticRollNumber;
