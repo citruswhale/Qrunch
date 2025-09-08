@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_marginStart="24dp"
     android:layout_marginEnd="24dp"
     app:cardCornerRadius="16dp"
@@ -14,22 +14,23 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:foregroundGravity="center">
 
         <ImageView
             android:id="@+id/popupImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="250dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
+            android:layout_gravity="center"
             android:visibility="gone"
             tools:srcCompat="@tools:sample/backgrounds/scenic" /> <!-- Placeholder for design view -->
 
         <TextView
             android:id="@+id/textViewPlaceholder"
             android:layout_width="match_parent"
-            android:layout_height="646dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:fontFamily="@font/bionic_comic"
             android:gravity="center"

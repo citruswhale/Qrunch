@@ -2,7 +2,9 @@ package com.example.test.helper;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -19,12 +21,13 @@ public class ImageFetcher {
     private Call<ImageResponse> currentCall;
 
     // Fetch image and load into ImageView (with caching)
-    public void fetchImage(Activity activity, Long vendorId, ImageView imageView) {
+    public void fetchImage(Activity activity, Long vendorId, ImageView imageView, TextView placeholder) {
         // 1. Check cache
-        // String cachedImage = MenuCacheBustingHelper.getCachedImage(activity);
-        String cachedImage = "https://tstxevjuvcrabrrtkgfc.supabase.co/storage/v1/object/public/menu/ChatGPT%20Image%20Aug%2025,%202025,%2011_16_31%20PM.png";
+        String cachedImage = MenuCacheBustingHelper.getCachedImage(activity);
         if (cachedImage != null) {
-            Glide.with(imageView.getContext())
+            imageView.setVisibility(View.VISIBLE);
+            if (placeholder != null) placeholder.setVisibility(View.GONE);
+            Glide.with(activity.getApplicationContext())
                     .load(cachedImage)
                     .into(imageView);
             return; // ✅ Done, no API call needed
@@ -43,9 +46,13 @@ public class ImageFetcher {
                 Log.e("ImageFetcher", "Calling API with vendorId=" + vendorId);
                 if (!call.isCanceled() && response.isSuccessful() && response.body() != null) {
                     String imageUrl = response.body().getImageUrl();
+                    Log.e(imageUrl, imageUrl);
 
                     // 🔹 Save to cache
                     MenuCacheBustingHelper.saveImage(activity, imageUrl);
+
+                    imageView.setVisibility(View.VISIBLE);
+                    if (placeholder != null) placeholder.setVisibility(View.GONE);
 
                     // Load image
                     Glide.with(activity.getApplicationContext())
