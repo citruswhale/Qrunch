@@ -3,8 +3,11 @@ package com.example.test.screen;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,13 +16,21 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.test.R;
+import com.example.test.api.LambdaApi;
+import com.example.test.api.RetrofitClient;
 import com.example.test.helper.LoadUserHelper;
 import com.example.test.helper.PrefsHelper;
+import com.example.test.model.QRRequestBody;
+import com.example.test.model.QRResponse;
+
+import retrofit2.Call;
 
 public class HomeActivity extends AppCompatActivity {
 
     private ImageButton buttonEditProfile;
     private Button buttonViewMenu;
+    private ImageView imageViewQR;
+    private TextView textViewQRPlaceHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +45,10 @@ public class HomeActivity extends AppCompatActivity {
 
         buttonEditProfile = findViewById(R.id.buttonEditProfile);
         buttonViewMenu = findViewById(R.id.buttonViewMenu);
+        imageViewQR = findViewById(R.id.imageViewQR);
+        textViewQRPlaceHolder = findViewById(R.id.textViewPlaceholder);
+
+        loadQR();
 
         buttonEditProfile.setOnClickListener(view -> {
             Intent intent = new Intent(HomeActivity.this, EditProfileActivity.class);
@@ -68,5 +83,47 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             ImagePopupDialog.newInstance(vendorId).show(getSupportFragmentManager(), "ImagePopupDialog");
         }
+    }
+
+    private void loadQR() {
+        Long vendorId = PrefsHelper.getVendorId(this);
+        String rollNo = PrefsHelper.getRollNo(this);
+
+        if (vendorId == null || rollNo == null) {
+            textViewQRPlaceHolder.setVisibility(View.VISIBLE);
+            imageViewQR.setVisibility(View.GONE);
+            return;
+        }
+
+        LambdaApi api = RetrofitClient.getLambdaApi("generateQR");
+        QRRequestBody requestBody = new QRRequestBody(vendorId.toString(), rollNo);
+
+        Call<QRResponse> call = api.generateQR(requestBody);
+        call.enqueue(new retrofit2.Callback<QRResponse>() {
+            @Override
+            public void onResponse(Call<QRResponse> call, retrofit2.Response<QRResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String dataUri = response.body().getQrImage();
+                    String base64Data = dataUri.split(",")[1];
+
+                    byte[] decodedBytes = android.util.Base64.decode(base64Data, android.util.Base64.DEFAULT);
+                    android.graphics.Bitmap bitmap = android.graphics.BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+                    imageViewQR.setImageBitmap(bitmap);
+                    imageViewQR.setVisibility(View.VISIBLE);
+                    textViewQRPlaceHolder.setVisibility(View.GONE);
+                } else {
+                    textViewQRPlaceHolder.setVisibility(View.VISIBLE);
+                    imageViewQR.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<QRResponse> call, Throwable t) {
+                t.printStackTrace();
+                textViewQRPlaceHolder.setVisibility(View.VISIBLE);
+                imageViewQR.setVisibility(View.GONE);
+            }
+        });
     }
 }

@@ -34,7 +34,7 @@ public class ImageFetcher {
         }
 
         // 2. If not cached → Call Lambda
-        LambdaApi api = RetrofitClient.getLambdaApi();
+        LambdaApi api = RetrofitClient.getLambdaApi("fetchMenuImage");
 
         // Cancel previous call if still running
         if (currentCall != null) currentCall.cancel();

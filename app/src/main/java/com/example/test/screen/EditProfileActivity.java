@@ -45,6 +45,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private Button buttonSignOut;
     private Button buttonDeleteAccount;
     private String rollNo;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +112,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
                         if (name != null) {
                             editTextName.setText(name);
+                            this.name = name;
                         }
                         if (rollNo != null) {
                             editTextStaticRollNumber.setText(rollNo);
@@ -134,6 +136,11 @@ public class EditProfileActivity extends AppCompatActivity {
 
         String authUid  = user.getUid();
         String name = editTextName.getText().toString().trim();
+
+        if (this.name.equals(name)) {
+            Toast.makeText(this, "No changes made", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (name.isEmpty()) {
             editTextName.setError("Name required");

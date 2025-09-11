@@ -39,22 +39,41 @@
         app:layout_constraintHorizontal_bias="0.087"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.058"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <ImageView
         android:id="@+id/imageViewQR"
         android:layout_width="365dp"
         android:layout_height="402dp"
-        android:layout_marginTop="32dp"
         android:contentDescription="Food Image"
         android:src="@drawable/app_logo"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/textViewQR"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonViewMenu"
-        app:layout_constraintVertical_bias="0.535"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_bias="0.525"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
+
+    <TextView
+        android:id="@+id/textViewPlaceholder"
+        android:layout_width="365dp"
+        android:layout_height="402dp"
+        android:fontFamily="@font/bionic_comic"
+        android:gravity="center"
+        android:padding="24dp"
+        android:text="You haven't opted in yet!"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#fff4e7"
+        android:textSize="24sp"
+        android:visibility="visible"
+        android:background="#3e2700"
+        app:layout_constraintBottom_toTopOf="@+id/buttonViewMenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewQR"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonViewMenu"
@@ -71,11 +90,12 @@
         android:textSize="24sp"
         app:backgroundTint="#f2b158"
         app:cornerRadius="8dp"
+        app:layout_constraintVertical_bias="0.99"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewQR"
-        app:layout_constraintVertical_bias="0.62"
         app:strokeColor="#3e2700"
-        app:strokeWidth="3dp" />
+        app:strokeWidth="3dp"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 </androidx.constraintlayout.widget.ConstraintLayout>
