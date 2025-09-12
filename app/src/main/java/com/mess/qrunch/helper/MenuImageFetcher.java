@@ -19,19 +19,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ImageFetcher {
+public class MenuImageFetcher {
     private Call<ImageResponse> currentCall;
 
     // Fetch image and load into ImageView (with caching)
-    public void fetchImage(Activity activity, Long vendorId, ImageView imageView, TextView placeholder) {
+    public void fetchImage(Activity activity, Long vendorId, ImageView imageViewMenu, TextView textViewMenuPlaceholder) {
         // 1. Check cache
         String cachedImage = MenuCacheBustingHelper.getCachedImage(activity);
         if (cachedImage != null) {
-            imageView.setVisibility(View.VISIBLE);
-            if (placeholder != null) placeholder.setVisibility(View.GONE);
+            imageViewMenu.setVisibility(View.VISIBLE);
+            if (textViewMenuPlaceholder != null) textViewMenuPlaceholder.setVisibility(View.GONE);
             Glide.with(activity.getApplicationContext())
                     .load(cachedImage)
-                    .into(imageView);
+                    .into(imageViewMenu);
             return; // ✅ Done, no API call needed
         }
 
@@ -45,29 +45,30 @@ public class ImageFetcher {
         currentCall.enqueue(new Callback<ImageResponse>() {
             @Override
             public void onResponse(@NonNull Call<ImageResponse> call, @NonNull Response<ImageResponse> response) {
-                Log.e("ImageFetcher", "Calling API with vendorId=" + vendorId);
+                Log.e("MenuImageFetcher", "Calling API with vendorId=" + vendorId);
                 if (!call.isCanceled() && response.isSuccessful() && response.body() != null) {
                     String imageUrl = response.body().getImageUrl();
-                    Log.e(imageUrl, imageUrl);
 
                     // 🔹 Save to cache
                     MenuCacheBustingHelper.saveImage(activity, imageUrl);
 
-                    imageView.setVisibility(View.VISIBLE);
-                    if (placeholder != null) placeholder.setVisibility(View.GONE);
+                    imageViewMenu.setVisibility(View.VISIBLE);
+                    if (textViewMenuPlaceholder != null) textViewMenuPlaceholder.setVisibility(View.GONE);
 
                     // Load image
                     Glide.with(activity.getApplicationContext())
                             .load(imageUrl)
-                            .into(imageView);
+                            .into(imageViewMenu);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ImageResponse> call, @NonNull Throwable t) {
-                Log.e("ImageFetcher", "Calling API with vendorId=" + vendorId);
+                Log.e("MenuImageFetcher", "Calling API with vendorId=" + vendorId);
                 if (!call.isCanceled()) t.printStackTrace();
-                Log.e("ImageFetcher", "Couldn't fetch image.");
+                Log.e("MenuImageFetcher", "Couldn't fetch image.");
+                imageViewMenu.setVisibility(View.GONE);
+                if (textViewMenuPlaceholder != null) textViewMenuPlaceholder.setVisibility(View.VISIBLE);
             }
         });
     }

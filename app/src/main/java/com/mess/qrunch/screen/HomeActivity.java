@@ -1,15 +1,13 @@
 package com.mess.qrunch.screen;
 
-import static com.mess.qrunch.api.baseApiURL.GENERATE_QR_BASE_URL;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,14 +16,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.mess.qrunch.R;
-import com.mess.qrunch.api.LambdaApi;
-import com.mess.qrunch.api.RetrofitClient;
 import com.mess.qrunch.helper.LoadUserHelper;
 import com.mess.qrunch.helper.PrefsHelper;
-import com.mess.qrunch.model.QRRequestBody;
-import com.mess.qrunch.model.QRResponse;
-
-import retrofit2.Call;
+import com.mess.qrunch.helper.QRImageFetcher;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -33,6 +26,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button buttonViewMenu;
     private ImageView imageViewQR;
     private TextView textViewQRPlaceHolder;
+    private QRImageFetcher qrImageFetcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +43,8 @@ public class HomeActivity extends AppCompatActivity {
         buttonViewMenu = findViewById(R.id.buttonViewMenu);
         imageViewQR = findViewById(R.id.imageViewQR);
         textViewQRPlaceHolder = findViewById(R.id.textViewPlaceholder);
+
+        qrImageFetcher = new QRImageFetcher();
 
         loadQR();
 
@@ -69,11 +65,12 @@ public class HomeActivity extends AppCompatActivity {
             LoadUserHelper loadUserHelper = new LoadUserHelper();
             loadUserHelper.loadUserProfile(this, new LoadUserHelper.ProfileLoadCallback() {
                 @Override
-                public void onProfileLoaded(Long vendorId) {
+                public void onProfileLoaded(Long vendorId, String rollNo, String name) {
                     if (vendorId != null) {
                         ImagePopupDialog.newInstance(vendorId).show(getSupportFragmentManager(), "ImagePopupDialog");
                     } else {
                         Log.e("HomeActivity", "VendorId is still null");
+                        Toast.makeText(HomeActivity.this, "No vendor chosen", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -92,40 +89,24 @@ public class HomeActivity extends AppCompatActivity {
         String rollNo = PrefsHelper.getRollNo(this);
 
         if (vendorId == null || rollNo == null) {
-            textViewQRPlaceHolder.setVisibility(View.VISIBLE);
-            imageViewQR.setVisibility(View.GONE);
-            return;
-        }
-
-        LambdaApi api = RetrofitClient.getLambdaApi(GENERATE_QR_BASE_URL);
-        QRRequestBody requestBody = new QRRequestBody(vendorId.toString(), rollNo);
-
-        Call<QRResponse> call = api.generateQR(requestBody);
-        call.enqueue(new retrofit2.Callback<QRResponse>() {
-            @Override
-            public void onResponse(Call<QRResponse> call, retrofit2.Response<QRResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    String dataUri = response.body().getQrImage();
-                    String base64Data = dataUri.split(",")[1];
-
-                    byte[] decodedBytes = android.util.Base64.decode(base64Data, android.util.Base64.DEFAULT);
-                    android.graphics.Bitmap bitmap = android.graphics.BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-
-                    imageViewQR.setImageBitmap(bitmap);
-                    imageViewQR.setVisibility(View.VISIBLE);
-                    textViewQRPlaceHolder.setVisibility(View.GONE);
-                } else {
-                    textViewQRPlaceHolder.setVisibility(View.VISIBLE);
-                    imageViewQR.setVisibility(View.GONE);
+            LoadUserHelper loadUserHelper = new LoadUserHelper();
+            loadUserHelper.loadUserProfile(this, new LoadUserHelper.ProfileLoadCallback() {
+                @Override
+                public void onProfileLoaded(Long vendorId, String rollNo, String name) {
+                    if (vendorId != null) {
+                        qrImageFetcher.fetchImage(HomeActivity.this, vendorId, rollNo, imageViewQR, textViewQRPlaceHolder);
+                    } else {
+                        Log.e("HomeActivity", "VendorId is still null");
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<QRResponse> call, Throwable t) {
-                t.printStackTrace();
-                textViewQRPlaceHolder.setVisibility(View.VISIBLE);
-                imageViewQR.setVisibility(View.GONE);
-            }
-        });
+                @Override
+                public void onError(Exception e) {
+                    Log.e("HomeActivity", "Failed to load profile", e);
+                }
+            });
+        } else {
+            qrImageFetcher.fetchImage(this, vendorId, rollNo, imageViewQR, textViewQRPlaceHolder);
+        }
     }
 }

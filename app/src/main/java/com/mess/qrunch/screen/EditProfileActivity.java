@@ -20,6 +20,9 @@ import androidx.credentials.CredentialManagerCallback;
 import androidx.credentials.exceptions.ClearCredentialException;
 
 import com.mess.qrunch.R;
+import com.mess.qrunch.helper.MenuCacheBustingHelper;
+import com.mess.qrunch.helper.PrefsHelper;
+import com.mess.qrunch.helper.QRCacheBustingHelper;
 import com.mess.qrunch.helper.ReauthenticateUserForSensitiveOpsHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -28,6 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.File;
 import java.util.concurrent.Executors;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -170,6 +174,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 new CredentialManagerCallback<>() {
                     @Override
                     public void onResult(@NonNull Void result) {
+                        clearAllCache();
                         startActivity(new Intent(EditProfileActivity.this, LoginActivity.class));
                         finish();
                     }
@@ -207,5 +212,38 @@ public class EditProfileActivity extends AppCompatActivity {
                     Log.e("DeleteUser", "Re-auth failed", ex);
                 }
             });
+    }
+
+    private void clearAllCache() {
+        try {
+            // Clear all SharedPreferences
+            PrefsHelper.clearAll(this);
+            MenuCacheBustingHelper.clearCache(this);
+            QRCacheBustingHelper.clearCache(this);
+
+            // Clear app cache directory (files in /data/data/<package>/cache)
+            deleteDir(getCacheDir());
+
+            Log.d(TAG, "All caches cleared");
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to clear cache", e);
+        }
+    }
+
+    // Recursively delete files/dirs in cache
+    private boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            if (children != null) {
+                for (String child : children) {
+                    boolean success = deleteDir(new File(dir, child));
+                    if (!success) {
+                        return false;
+                    }
+                }
+            }
+        }
+        // Delete the directory or file
+        return dir != null && dir.delete();
     }
 }

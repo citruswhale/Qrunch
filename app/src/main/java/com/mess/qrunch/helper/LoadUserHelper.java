@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 public class LoadUserHelper {
     private final CollectionReference usersRef;
 
@@ -13,8 +14,9 @@ public class LoadUserHelper {
         usersRef = FirebaseFirestore.getInstance().collection("users");
     }
 
+    // Updated interface: return vendorId + rollNo + name
     public interface ProfileLoadCallback {
-        void onProfileLoaded(Long vendorId);
+        void onProfileLoaded(Long vendorId, String rollNo, String name);
         void onError(Exception e);
     }
 
@@ -38,7 +40,7 @@ public class LoadUserHelper {
                         if (rollNo != null) PrefsHelper.saveRollNo(activity, rollNo);
                         if (vendorId != null) PrefsHelper.saveVendorId(activity, vendorId);
 
-                        callback.onProfileLoaded(vendorId);
+                        callback.onProfileLoaded(vendorId, rollNo, name);
                     } else {
                         callback.onError(new Exception("No profile found"));
                     }
