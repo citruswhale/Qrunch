@@ -1,4 +1,4 @@
-package com.example.test.helper;
+package com.mess.qrunch.helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,9 +9,8 @@ import java.util.Locale;
 
 public class MenuCacheBustingHelper {
     private static final String PREF_NAME = "ImageCachePrefs";
-
     private static final String KEY_IMAGE_URL = "imageUrl";
-    private static final String KEY_LAST_UPDATED = "lastUpdated";
+    private static final String KEY_LAST_UPDATED = "lastUpdatedDate";
 
     private static SharedPreferences getPrefs(Context context) {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
