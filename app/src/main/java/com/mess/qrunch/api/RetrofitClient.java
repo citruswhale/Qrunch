@@ -1,4 +1,4 @@
-package com.example.mess.api;
+package com.mess.qrunch.api;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

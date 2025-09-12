@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.test"
+    namespace = "com.mess.qrunch"
     compileSdk = 36
 
     defaultConfig {

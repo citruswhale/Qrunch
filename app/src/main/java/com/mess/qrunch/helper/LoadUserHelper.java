@@ -1,4 +1,4 @@
-package com.example.test.helper;
+package com.mess.qrunch.helper;
 
 import android.app.Activity;
 

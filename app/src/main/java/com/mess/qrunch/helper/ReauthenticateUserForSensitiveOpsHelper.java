@@ -1,4 +1,4 @@
-package com.example.test.helper;
+package com.mess.qrunch.helper;
 
 import static com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL;
 

@@ -1,4 +1,4 @@
-package com.example.test.model;
+package com.mess.qrunch.model;
 
 public class QRRequestBody {
     private String vendorId;

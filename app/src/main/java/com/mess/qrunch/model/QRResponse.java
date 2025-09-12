@@ -1,4 +1,4 @@
-package com.example.test.model;
+package com.mess.qrunch.model;
 
 import com.google.gson.annotations.SerializedName;
 

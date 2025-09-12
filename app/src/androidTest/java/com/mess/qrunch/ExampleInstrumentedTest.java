@@ -1,4 +1,4 @@
-package com.example.test;
+package com.mess.qrunch;
 
 import android.content.Context;
 

@@ -1,4 +1,4 @@
-package com.example.test.screen;
+package com.mess.qrunch.screen;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.test.R;
-import com.example.test.helper.ImageFetcher;
+import com.mess.qrunch.R;
+import com.mess.qrunch.helper.ImageFetcher;
 
 public class ImagePopupDialog extends DialogFragment {
     private static final String ARG_VENDOR_ID = "vendorId";

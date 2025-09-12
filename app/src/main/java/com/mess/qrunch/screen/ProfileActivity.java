@@ -1,4 +1,4 @@
-package com.example.test.screen;
+package com.mess.qrunch.screen;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,9 +15,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.test.R;
-import com.example.test.helper.PrefsHelper;
-import com.example.test.model.User;
+import com.mess.qrunch.R;
+import com.mess.qrunch.helper.PrefsHelper;
+import com.mess.qrunch.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;

@@ -1,4 +1,4 @@
-package com.example.test.screen;
+package com.mess.qrunch.screen;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,8 +19,8 @@ import androidx.credentials.CredentialManager;
 import androidx.credentials.CredentialManagerCallback;
 import androidx.credentials.exceptions.ClearCredentialException;
 
-import com.example.test.R;
-import com.example.test.helper.ReauthenticateUserForSensitiveOpsHelper;
+import com.mess.qrunch.R;
+import com.mess.qrunch.helper.ReauthenticateUserForSensitiveOpsHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;

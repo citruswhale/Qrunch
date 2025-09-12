@@ -1,4 +1,6 @@
-package com.example.test.helper;
+package com.mess.qrunch.helper;
+
+import static com.mess.qrunch.api.baseApiURL.FETCH_MENU_IMAGE_BASE_URL;
 
 import android.app.Activity;
 import android.util.Log;
@@ -9,9 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
-import com.example.test.api.LambdaApi;
-import com.example.test.api.RetrofitClient;
-import com.example.test.model.ImageResponse;
+import com.mess.qrunch.api.LambdaApi;
+import com.mess.qrunch.api.RetrofitClient;
+import com.mess.qrunch.model.ImageResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +36,7 @@ public class ImageFetcher {
         }
 
         // 2. If not cached → Call Lambda
-        LambdaApi api = RetrofitClient.getLambdaApi("fetchMenuImage");
+        LambdaApi api = RetrofitClient.getLambdaApi(FETCH_MENU_IMAGE_BASE_URL);
 
         // Cancel previous call if still running
         if (currentCall != null) currentCall.cancel();

@@ -1,4 +1,4 @@
-package com.example.mess.api;
+package com.mess.qrunch.api;
 
 public enum baseApiURL {
     FETCH_MENU_IMAGE_BASE_URL("https://tlhqgr3g47.execute-api.eu-north-1.amazonaws.com"),

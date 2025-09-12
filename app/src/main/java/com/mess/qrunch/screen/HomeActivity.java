@@ -1,6 +1,6 @@
-package com.example.mess.screen;
+package com.mess.qrunch.screen;
 
-import static com.example.mess.api.baseApiURL.GENERATE_QR_BASE_URL;
+import static com.mess.qrunch.api.baseApiURL.GENERATE_QR_BASE_URL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,13 +17,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.mess.R;
-import com.example.mess.api.LambdaApi;
-import com.example.mess.api.RetrofitClient;
-import com.example.mess.helper.LoadUserHelper;
-import com.example.mess.helper.PrefsHelper;
-import com.example.mess.model.QRRequestBody;
-import com.example.mess.model.QRResponse;
+import com.mess.qrunch.R;
+import com.mess.qrunch.api.LambdaApi;
+import com.mess.qrunch.api.RetrofitClient;
+import com.mess.qrunch.helper.LoadUserHelper;
+import com.mess.qrunch.helper.PrefsHelper;
+import com.mess.qrunch.model.QRRequestBody;
+import com.mess.qrunch.model.QRResponse;
 
 import retrofit2.Call;
 

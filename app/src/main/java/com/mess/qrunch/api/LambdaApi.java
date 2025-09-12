@@ -1,8 +1,8 @@
-package com.example.test.api;
+package com.mess.qrunch.api;
 
-import com.example.test.model.ImageResponse;
-import com.example.test.model.QRRequestBody;
-import com.example.test.model.QRResponse;
+import com.mess.qrunch.model.ImageResponse;
+import com.mess.qrunch.model.QRRequestBody;
+import com.mess.qrunch.model.QRResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
