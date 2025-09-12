@@ -1,4 +1,6 @@
-package com.example.test.screen;
+package com.example.mess.screen;
+
+import static com.example.mess.api.baseApiURL.GENERATE_QR_BASE_URL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,13 +17,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.test.R;
-import com.example.test.api.LambdaApi;
-import com.example.test.api.RetrofitClient;
-import com.example.test.helper.LoadUserHelper;
-import com.example.test.helper.PrefsHelper;
-import com.example.test.model.QRRequestBody;
-import com.example.test.model.QRResponse;
+import com.example.mess.R;
+import com.example.mess.api.LambdaApi;
+import com.example.mess.api.RetrofitClient;
+import com.example.mess.helper.LoadUserHelper;
+import com.example.mess.helper.PrefsHelper;
+import com.example.mess.model.QRRequestBody;
+import com.example.mess.model.QRResponse;
 
 import retrofit2.Call;
 
@@ -95,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
-        LambdaApi api = RetrofitClient.getLambdaApi("generateQR");
+        LambdaApi api = RetrofitClient.getLambdaApi(GENERATE_QR_BASE_URL);
         QRRequestBody requestBody = new QRRequestBody(vendorId.toString(), rollNo);
 
         Call<QRResponse> call = api.generateQR(requestBody);
